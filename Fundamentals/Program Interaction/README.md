@@ -117,7 +117,13 @@ We need to `unset` all the `env` variables. From the `man` page of `env`:
 $ env -i ./embryoio_level7 | grep pwn
 ```
 
-### Level 8 - bash script
+<center>
+    <h1>
+Bash Scripts
+    </h1> 
+</center>
+
+### Level 8
 
 ```bash
 [FAIL]    The shell process must be executing a shell script that you wrote like this: `bash my_script.sh`
@@ -129,7 +135,7 @@ We need to create a `bash` script that contains the path of the binary file and 
 $ echo "/challenge/embryoio_level8" > /tmp/my_script.sh && bash /tmp/my_script.sh | grep pwn
 ```
 
-### Level 9 - bash script
+### Level 9
 
 Pretty much the same challenge as before. The only difference is that it asks for a password after you run the script.
 
@@ -152,7 +158,7 @@ $ echo "/challenge/embryoio_level9" > /tmp/my_script.sh && bash /tmp/my_script.s
 > rjiewmuh
 ```
 
-### Level 10 - bash script
+### Level 10
 
 Same as before with the only difference it wants an `argv[1]` also.
 
@@ -164,7 +170,7 @@ Same as before with the only difference it wants an `argv[1]` also.
 $ echo "/challenge/embryoio_level10 dgfkwdrfuw" > /tmp/my_script.sh && bash /tmp/my_script.sh | grep pwn
 ```
 
-### Level 11 - bash script
+### Level 11
 
 Same as before, but this time we have to create an `env` variable with a given value.
 
@@ -176,7 +182,7 @@ Same as before, but this time we have to create an `env` variable with a given v
 $ echo "export caogqf=ssgxjrocni && /challenge/embryoio_level11" > /tmp/my_script.sh && bash /tmp/my_script.sh | grep pwn
 ```
 
-### Level 12 - bash script
+### Level 12
 
 This time the binary asks for a specific file as input and a `hardcoded` password.
 
@@ -193,7 +199,7 @@ echo "/challenge/embryoio_level12" > /tmp/my_script.sh && \
 bash /tmp/my_script.sh < /tmp/wfdtzy | grep pwn
 ```
 
-### Level 13 - bash script
+### Level 13
 
 Same as `Level 9` with the difference that now it redirects the output to a specific file.
 
@@ -201,7 +207,7 @@ Same as `Level 9` with the difference that now it redirects the output to a spec
 $ echo "/challenge/embryoio_level13" > /tmp/my_script.sh && bash /tmp/my_script.sh > /tmp/auiwce && cat /tmp/auiwce | grep pwn
 ```
 
-### Level 14 - bash script
+### Level 14 
 
 This is a mix of `Level 7 and 8`.
 
@@ -213,7 +219,13 @@ This is a mix of `Level 7 and 8`.
 $ echo "env -i /challenge/embryoio_level14" > /tmp/my_script.sh && bash /tmp/my_script.sh | grep pwn
 ```
 
-### Level 15 - ipython/pwntools
+<center>
+    <h1>
+pwntools - ipython
+    </h1> 
+</center>
+
+### Level 15
 
 We need to create an `ipython` script to run the binary. I prefer to open the binary as process with `pwntools`. 
 
@@ -233,7 +245,7 @@ We save the file as `/tmp/w3t.py` and then we run `ipython` to enter the interpr
 In [1]: %run w3t.py
 ```
 
-### Level 16 - ipython/pwntools
+### Level 16
 
 Same as before with a small twist.
 
@@ -257,7 +269,7 @@ print(r.recvline_contains(b"pwn").decode())
 In [1]: %run w3t.py
 ```
 
-### Level 17 - ipython/pwntools
+### Level 17
 
 Pretty much the same.
 
@@ -275,7 +287,7 @@ r = process(["/challenge/embryoio_level17", "muzdkobxjd"])
 print(r.recvline_contains(b"pwn").decode())
 ```
 
-### Level 18 - ipython/pwntools
+### Level 18
 
 The challenges follow a certain pattern, no need for deep analysis.
 
@@ -293,7 +305,7 @@ r = process(["/challenge/embryoio_level18"], env={'cnsysl': 'idndqtahuc'})
 print(r.recvline_contains(b"pwn").decode())
 ```
 
-### Level 19 - ipython/pwntools
+### Level 19
 
 ```bash
 - the challenge will check that input is redirected from a specific file path : /tmp/qymjzu
@@ -318,7 +330,7 @@ print(r.recvline_contains(b"pwn").decode())
 f.close()
 ```
 
-### Level 20 - ipython/pwntools
+### Level 20
 
 ```bash
 - the challenge will check that output is redirected to a specific file path : /tmp/dkihjg
@@ -336,7 +348,7 @@ with open("/tmp/dkihjg", "rb") as f:
 f.close()
 ```
 
-### Level 21 - ipython/pwntools
+### Level 21
 
 ```python
 from pwn import *
@@ -348,7 +360,13 @@ r = process(["/challenge/embryoio_level21"], env={})
 print(r.recvline_contains(b"pwn").decode())
 ```
 
-### Level 22 - ipython/pwntools
+<center>
+    <h1>
+subprocess
+    </h1> 
+</center>
+
+### Level 22
 
 We need to create a `subprocess` so the parent process is `python`.
 
@@ -356,7 +374,200 @@ We need to create a `subprocess` so the parent process is `python`.
 - the challenge checks for a specific parent process : python
 ```
 
-```bash
-python w3t.py | grep pwn
+```python
+import subprocess
+
+subprocess.run(["/challenge/embryoio_level21"])
 ```
+
+```bash
+$ python w3t.py | grep pwn
+```
+
+### Level 23
+
+Same but with `hardcoded` password.
+
+```python
+import subprocess
+
+print(subprocess.run(["/challenge/embryoio_level23"], input="nnwzvnjf\n", capture_output=True, text=True))
+```
+
+```bash
+$ python w3t.py | grep pwn
+```
+
+### Level 24
+
+```bash
+- the challenge will check that argv[NUM] holds value VALUE (listed to the right as NUM:VALUE) : 1:hvcwkmqhxb
+```
+
+Similar to previous challenges.
+
+```python
+import subprocess
+
+print(subprocess.run(["/challenge/embryoio_level24", "hvcwkmqhxb"]))
+```
+
+```bash
+$ python w3t.py | grep pwn
+```
+
+### Level 25
+
+```bash
+- the challenge will check that env[KEY] holds value VALUE (listed to the right as KEY:VALUE) : qpvtwc:eghdabuygy
+```
+
+```python
+import subprocess
+
+print(subprocess.run(["/challenge/embryoio_level25"], env={"qpvtwc": "eghdabuygy"}))
+```
+
+```bash
+$ python w3t.py | grep pwn
+```
+
+### Level 26
+
+```bash
+- the challenge will check that input is redirected from a specific file path : /tmp/isodpx
+- the challenge will check for a hardcoded password over stdin : gkbdahrs
+```
+
+```python
+import subprocess
+import os
+
+os.system("echo gkbdahrs > /tmp/isodpx")
+
+with open("/tmp/isodpx", "rb") as f:  
+  print(subprocess.run(["/challenge/embryoio_level26"], stdin=f))
+
+f.close()
+```
+
+```bash
+$ python w3t.py | grep pwn
+```
+
+### Level 27
+
+```bash
+- the challenge will check that output is redirected to a specific file path : /tmp/ewcmrr
+```
+
+```python
+import subprocess
+import os
+
+with open("/tmp/ewcmrr", "wb") as f:  
+  print(subprocess.run(["/challenge/embryoio_level27"], stdout=f))
+
+f.close()
+```
+
+```bash
+$ python lel.py && cat /tmp/ewcmrr | grep pwn
+```
+
+### Level 28
+
+```bash
+- the challenge will check that the environment is empty (except LC_CTYPE, which is impossible to get rid of in some cases)
+```
+
+```python
+import subprocess
+
+print(subprocess.run(["/challenge/embryoio_level28"], env={}))
+```
+
+```bash
+$ python w3t.py | grep pwn
+```
+
+<center>
+    <h1>
+Binary
+    </h1> 
+</center>
+
+### Level 29
+
+New set of challenges (hopefully).
+
+```bash
+WELCOME! This challenge makes the following asks of you:
+- the challenge checks for a specific parent process : binary
+
+ONWARDS TO GREATNESS!
+
+[INFO] This challenge will now perform a bunch of checks.
+[INFO] If you pass these checks, you will receive the flag.
+[TEST] Performing checks on the parent process of this process.
+[TEST] Checking to make sure that the process is a custom binary that you created by compiling a C program
+[TEST] that you wrote. Make sure your C program has a function called 'pwncollege' in it --- otherwise,
+[TEST] it won't pass the checks.
+[HINT] If this is a check for the *parent* process, keep in mind that the exec() family of system calls
+[HINT] does NOT result in a parent-child relationship. The exec()ed process simply replaces the exec()ing
+[HINT] process. Parent-child relationships are created when a process fork()s off a child-copy of itself,
+[HINT] and the child-copy can then execve() a process that will be the new child. If we're checking for a
+[HINT] parent process, that's how you make that relationship.
+[INFO] The executable that we are checking is: /usr/bin/bash.
+[HINT] One frequent cause of the executable unexpectedly being a shell or docker-init is that your
+[HINT] parent process terminated before this check was run. This happens when your parent process launches
+[HINT] the child but does not wait on it! Look into the waitpid() system call to wait on the child!
+
+[HINT] Another frequent cause is the use of system() or popen() to execute the challenge. Both will actually
+[HINT] execute a shell that will then execute the challenge, so the parent of the challenge will be that
+[HINT] shell, rather than your program. You must use fork() and one of the exec family of functions (execve(),
+[HINT] execl(), etc).
+[FAIL] You did not satisfy all the execution requirements.
+[FAIL] Specifically, you must fix the following issue:
+[FAIL]    The process must be your own program in your own home directory.
+```
+
+For this set of challenges we should always create a `pwncollege()` inside our `C` code. Then, with `fork()`, we create a child process and execute `execl` to run our program.
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
+void main() {
+    // Create a child process
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        // Fork failed
+        perror("Fork failed");
+        exit(EXIT_FAILURE);
+    } else if (pid == 0) {
+        // Child process
+        execl("/challenge/embryoio_level29", "/challenge/embryoio_level29", NULL);
+
+        // Child process exits after executing the function
+        _exit(0);
+    } else {
+        // Parent process
+        // Wait for the child process to finish
+        waitpid(pid, NULL, 0);
+    }
+}
+
+__attribute__((constructor))
+void pwncollege() {}
+```
+
+```bash
+gcc w3t.c -o w3t && ./w3t | grep pwn.college
+```
+
+### Level 30
 
