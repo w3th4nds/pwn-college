@@ -493,9 +493,10 @@ $ python w3t.py | grep pwn
 
 <center>
     <h1>
-Binary
+Binary - fork
     </h1> 
 </center>
+
 
 ### Level 29
 
@@ -551,7 +552,6 @@ void main() {
     } else if (pid == 0) {
         // Child process
         execl("/challenge/embryoio_level29", "/challenge/embryoio_level29", NULL);
-
         // Child process exits after executing the function
         _exit(0);
     } else {
@@ -570,4 +570,474 @@ gcc w3t.c -o w3t && ./w3t | grep pwn.college
 ```
 
 ### Level 30
+
+Same but with hardcoded password from `stdin`.
+
+```bash
+- the challenge will check for a hardcoded password over stdin : yjgngclz
+```
+
+We take the exact program from before and we pass it the password.
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
+void main() {
+    // Create a child process
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        // Fork failed
+        perror("Fork failed");
+        exit(EXIT_FAILURE);
+    } else if (pid == 0) {
+        // Child process
+        execl("/challenge/embryoio_level30", "/challenge/embryoio_level30", NULL);
+        // Child process exits after executing the function
+        _exit(0);
+    } else {
+        // Parent process
+        // Wait for the child process to finish
+        waitpid(pid, NULL, 0);
+    }
+}
+
+__attribute__((constructor))
+void pwncollege() {}
+```
+
+```bash
+$ gcc w3t.c -o w3t &&  echo 'yjgngclz' | ./w3t | grep pwn.college
+```
+
+### Level 31
+
+```bash
+- the challenge will check that argv[NUM] holds value VALUE (listed to the right as NUM:VALUE) : 1:nlhrekavwx
+```
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
+void main() {
+    // Create a child process
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        // Fork failed
+        perror("Fork failed");
+        exit(EXIT_FAILURE);
+    } else if (pid == 0) {
+        // Child process
+        execl("/challenge/embryoio_level31", "/challenge/embryoio_level31", "nlhrekavwx", NULL);
+        // Child process exits after executing the function
+        _exit(0);
+    } else {
+        // Parent process
+        // Wait for the child process to finish
+        waitpid(pid, NULL, 0);
+    }
+}
+
+__attribute__((constructor))
+void pwncollege() {}
+```
+
+```bash
+$ gcc w3t.c -o w3t && ./w3t | grep pwn.college
+```
+
+### Level 32
+
+```bash
+- the challenge will check that env[KEY] holds value VALUE (listed to the right as KEY:VALUE) : abhhly:fjrkpncrkn
+```
+
+We will use the `setenv` function to set the variables.
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
+void main() {
+    // Set environment variable
+    if (setenv("abhhly", "fjrkpncrkn", 1) != 0) {
+        perror("setenv failed");
+        exit(EXIT_FAILURE);
+    }
+    // Create a child process
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        // Fork failed
+        perror("Fork failed");
+        exit(EXIT_FAILURE);
+    } else if (pid == 0) {
+        // Child process
+        execl("/challenge/embryoio_level32", "/challenge/embryoio_level32", "nlhrekavwx", NULL);
+        // Child process exits after executing the function
+        _exit(0);
+    } else {
+        // Parent process
+        // Wait for the child process to finish
+        waitpid(pid, NULL, 0);
+    }
+}
+
+__attribute__((constructor))
+void pwncollege() {}
+```
+
+```bash
+$ gcc w3t.c -o w3t && ./w3t | grep pwn.college
+```
+
+### Level 33
+
+```bash
+- the challenge will check that input is redirected from a specific file path : /tmp/pempyr
+- the challenge will check for a hardcoded password over stdin : zyorkqoc
+```
+
+We will use the `freopen` function to redirect the input to a specific file path.
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
+void main() {
+    // Check if input is redirected from the specific file path
+    if (!freopen("/tmp/pempyr", "r", stdin)) {
+        perror("freopen failed");
+        exit(EXIT_FAILURE);
+    }
+    // Create a child process
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        // Fork failed
+        perror("Fork failed");
+        exit(EXIT_FAILURE);
+    } else if (pid == 0) {
+        // Child process
+        execl("/challenge/embryoio_level33", "/challenge/embryoio_level33", NULL);
+        // Child process exits after executing the function
+        _exit(0);
+    } else {
+        // Parent process
+        // Wait for the child process to finish
+        waitpid(pid, NULL, 0);
+    }
+}
+
+__attribute__((constructor))
+void pwncollege() {}
+```
+
+```bash
+$ echo zyorkqoc > /tmp/pempyr && gcc w3t.c -o w3t && ./w3t | grep pwn.college
+```
+
+### Level 34
+
+```bash
+- the challenge will check that output is redirected to a specific file path : /tmp/vugval
+```
+
+We will use the `freopen` function to redirect the input to a specific file path.
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
+void main() {
+    // Check if input is redirected from the specific file path
+    if (!freopen("/tmp/vugval", "w", stdout)) {
+        perror("freopen failed");
+        exit(EXIT_FAILURE);
+    }
+    // Create a child process
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        // Fork failed
+        perror("Fork failed");
+        exit(EXIT_FAILURE);
+    } else if (pid == 0) {
+        // Child process
+        execl("/challenge/embryoio_level34", "/challenge/embryoio_level34", NULL);
+        // Child process exits after executing the function
+        _exit(0);
+    } else {
+        // Parent process
+        // Wait for the child process to finish
+        waitpid(pid, NULL, 0);
+    }
+}
+
+__attribute__((constructor))
+void pwncollege() {}
+```
+
+```bash
+$ gcc w3t.c -o w3t && ./w3t; cat /tmp/vugval | grep pwn.college
+```
+
+### Level 35
+
+```bash
+- the challenge will check that the environment is empty (except LC_CTYPE, which is impossible to get rid of in some cases)
+```
+
+We will use `    clearenv();` to clear the `env` variables.
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
+void main() {
+    // Clear the environment
+    clearenv();
+    
+    // Create a child process
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        // Fork failed
+        perror("Fork failed");
+        exit(EXIT_FAILURE);
+    } else if (pid == 0) {
+        // Child process
+        execl("/challenge/embryoio_level35", "/challenge/embryoio_level35", NULL);
+        // Child process exits after executing the function
+        _exit(0);
+    } else {
+        // Parent process
+        // Wait for the child process to finish
+        waitpid(pid, NULL, 0);
+    }
+
+__attribute__((constructor))
+void pwncollege() {}
+```
+
+```bash
+$ gcc w3t.c -o w3t && ./w3t | grep pwn.college
+```
+
+<center>
+    <h1>
+Pipes
+    </h1> 
+</center>
+
+### Level 36
+
+In this set of challenges, we need to run `/usr/bin/bash` again before we start our exploitation.
+
+```bash
+- the challenge checks for a specific parent process : bash
+- the challenge checks for a specific process at the other end of stdout : cat    
+```
+
+```bash
+$ /challenge/embryoio_level36 | cat | grep pwn.college
+```
+
+### Level 37
+
+```bash
+- the challenge checks for a specific process at the other end of stdout : grep
+```
+
+This is what we have been doing for the rest of the challenges so far.
+
+```bash
+$ /challenge/embryoio_level37 | grep pwn.college
+```
+
+### Level 38
+
+```bash
+- the challenge checks for a specific process at the other end of stdout : sed
+```
+
+```bash
+$ /challenge/embryoio_level38 | sed -n '/pwn\.college/p'
+```
+
+### Level 39
+
+```bash
+- the challenge checks for a specific process at the other end of stdout : rev
+```
+
+We need to `rev` the string and then `rev` it again to get the actual flag.
+
+```bash
+$ /challenge/embryoio_level39 | rev | rev | grep pwn.college
+```
+
+### Level 40
+
+```bash
+- the challenge checks for a specific process at the other end of stdin : cat
+- the challenge will check for a hardcoded password over stdin : xrilatyr
+```
+
+```bash
+$ cat | /challenge/embryoio_level40 
+```
+
+After that we enter the password to get the flag.
+
+### Level 41 BROOOOOOOOOOOKEN
+
+```bash
+- the challenge checks for a specific process at the other end of stdin : rev
+- the challenge will check for a hardcoded password over stdin : akpebwrt
+```
+
+
+
+```bash
+$ rev | /challenge/embryoio_level41	# add this if it manages to read it -> trwbepka
+```
+
+<center>
+    <h1>
+Shellscript
+    </h1> 
+</center>
+
+### Level 42
+
+In this set of challenges we need to write some simple `bash` scripts or `shellscripts`. To run them, we need to make them executable with `chmod +x w3t.sh`.
+
+```bash
+- the challenge checks for a specific parent process : shellscript
+- the challenge checks for a specific process at the other end of stdout : cat
+```
+
+```bash
+#!/usr/bin/bash
+
+/challenge/embryoio_level42 | cat | grep pwn.college
+```
+
+### Level 43
+
+```bash
+- the challenge checks for a specific process at the other end of stdout : grep
+```
+
+```bash
+#!/usr/bin/bash
+
+/challenge/embryoio_level43 | grep pwn.college
+```
+
+### Level 44
+
+```bash
+- the challenge checks for a specific process at the other end of stdout : sed
+```
+
+```bash
+#!/usr/bin/bash
+
+/challenge/embryoio_level44 | sed -n '/pwn\.college/p'
+```
+
+### Level 45
+
+```bash
+- the challenge checks for a specific process at the other end of stdout : rev
+```
+
+```bash
+#!/usr/bin/bash
+
+/challenge/embryoio_level45 | rev | rev | grep pwn.college
+```
+
+### Level 46
+
+```bash
+- the challenge checks for a specific process at the other end of stdin : cat
+- the challenge will check for a hardcoded password over stdin : qisfmbwz
+```
+
+```bash
+#!/usr/bin/bash
+
+cat | /challenge/embryoio_level46
+```
+
+After than, enter the password.
+
+### Level 47 BROOOOOOOOOOOOOOOOOOOOOOOOOken
+
+```bash
+- the challenge checks for a specific process at the other end of stdin : rev
+- the challenge will check for a hardcoded password over stdin : mrgnhwlh
+```
+
+<center>
+    <h1>
+ipython
+    </h1> 
+</center>
+
+### Level 48
+
+This was a bit harsh, I needed to search a lot to find about `Popen`. 
+
+```bash
+- the challenge checks for a specific parent process : ipython
+- the challenge checks for a specific process at the other end of stdout : cat
+```
+
+
+
+```bash
+#!/usr/bin/python
+import subprocess
+
+p1 = subprocess.Popen(['/challenge/embryoio_level48'], stdout=subprocess.PIPE)
+p2 = subprocess.Popen(['/usr/bin/cat'], stdin=p1.stdout, stdout=subprocess.PIPE)
+
+print(p2.communicate())
+```
+
+After that, we open `ipython` and execute the program.
+
+```ipython
+%run w3t.py
+```
+
+### Level 49
+
+```bash
+- the challenge checks for a specific parent process : ipython
+- the challenge checks for a specific process at the other end of stdout : grep
+```
+
+
+
+
 
