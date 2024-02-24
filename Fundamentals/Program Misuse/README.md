@@ -1,8 +1,6 @@
-<center>
-    <h1 style="color: green;">
-Program misuse
-    </h1> 
-</center>
+<div align="center">
+    <h1 style="color:#008000;"> Program Misuse </h1>
+</div>
 
 Most of these challenges can be solved with one liners, thus I will showcase the solutions below. I will not go into much details, the program runs the given commands with `SUID`. The purpose is for players to understand how the commands work. To getter a better understanding of each command, run on command line `man func_name`, e.g. `man cat`. Always run the given executable at `/challenge` to set the `sticky bit` to each command.
 
