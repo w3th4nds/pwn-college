@@ -1,8 +1,6 @@
-<center>
-    <h1 style="color: darkgreen;">
-        Program Interaction
-    </h1> 
-</center>
+<div align="center">
+    <h1 Program Interaction </h1> 
+</div>
 
 For these levels, the shell always prompts us to enter the default mode. Before every execution, we run `/usr/bin/bash` to get the default shell. Each executable will need some checks to be passed in order to print the flag. From later on, I will refer to them as `TEST` lines. All runs are from `/challenge` directory.
 
@@ -117,11 +115,9 @@ We need to `unset` all the `env` variables. From the `man` page of `env`:
 $ env -i ./embryoio_level7 | grep pwn
 ```
 
-<center>
-    <h1>
-Bash Scripts
-    </h1> 
-</center>
+<div align="center">
+    <h1> Bash Scripts </h1> 
+</div>
 
 ### Level 8
 
@@ -219,11 +215,9 @@ This is a mix of `Level 7 and 8`.
 $ echo "env -i /challenge/embryoio_level14" > /tmp/my_script.sh && bash /tmp/my_script.sh | grep pwn
 ```
 
-<center>
-    <h1>
-pwntools - ipython
-    </h1> 
-</center>
+<div align="center">
+    <h1> pwntools - ipython </h1> 
+</div>
 
 ### Level 15
 
@@ -360,11 +354,9 @@ r = process(["/challenge/embryoio_level21"], env={})
 print(r.recvline_contains(b"pwn").decode())
 ```
 
-<center>
-    <h1>
-subprocess
-    </h1> 
-</center>
+<div align="center">
+    <h1> subprocess </h1> 
+</div>
 
 ### Level 22
 
@@ -491,11 +483,9 @@ print(subprocess.run(["/challenge/embryoio_level28"], env={}))
 $ python w3t.py | grep pwn
 ```
 
-<center>
-    <h1>
-Binary - fork
-    </h1> 
-</center>
+<div align="center">
+    <h1> Binary - fork </h1> 
+</div>
 
 
 ### Level 29
@@ -839,11 +829,9 @@ void pwncollege() {}
 $ gcc w3t.c -o w3t && ./w3t | grep pwn.college
 ```
 
-<center>
-    <h1>
-Pipes
-    </h1> 
-</center>
+<div align="center">
+    <h1> Pipes </h1> 
+</div>
 
 ### Level 36
 
@@ -918,11 +906,11 @@ After that we enter the password to get the flag.
 $ rev | /challenge/embryoio_level41	# add this if it manages to read it -> trwbepka
 ```
 
-<center>
+<div align="center">
     <h1>
 Shellscript
     </h1> 
-</center>
+</div>
 
 ### Level 42
 
@@ -997,11 +985,9 @@ After than, enter the password.
 - the challenge will check for a hardcoded password over stdin : mrgnhwlh
 ```
 
-<center>
-    <h1>
-ipython
-    </h1> 
-</center>
+<div align="center">
+    <h1> ipython </h1> 
+</div>
 
 ### Level 48
 
