@@ -4,11 +4,9 @@
 
 Most of these challenges can be solved with one liners, thus I will showcase the solutions below. I will not go into much details, the program runs the given commands with `SUID`. The purpose is for players to understand how the commands work. To getter a better understanding of each command, run on command line `man func_name`, e.g. `man cat`. Always run the given executable at `/challenge` to set the `sticky bit` to each command.
 
-<center>
-    <h1>
-Commands to read the context of a file
-    </h1> 
-</center>
+<div align="center">
+    <h1> Commands to read the context of a file </h1> 
+</div>
 
 
 ### Level 1 - cat
@@ -96,11 +94,9 @@ $ emacs /flag
 $ nano /flag
 ```
 
-<center>
-    <h1>
-Analyze the output of the commands 
-    </h1> 
-</center>
+<div align="center">
+    <h1> Analyze the output of the commands </h1> 
+</div>
 
 
 ### Level 10 - rev
@@ -190,11 +186,9 @@ So, it will split the flag to `PREFIXaa` and `PREFIXab`. Reading the content of 
 $ split /flag && cat xaa 
 ```
 
-<center>
-    <h1>
-Archive formats
-    </h1> 
-</center>
+<div align="center">
+    <h1> Archive formats </h1> 
+</div>
 
 
 ### Level 17 - gzip
@@ -243,11 +237,9 @@ $ ar -r flag.a /flag && strings flag.a | grep pwn
 $ find /flag | cpio -o
 ```
 
-<center>
-    <h1>
-Execute other commands to read flag
-    </h1> 
-</center>
+<div align="center">
+    <h1> Execute other commands to read flag </h1> 
+</div>
 
 
 ### Level 23 - genisoimage
@@ -327,11 +319,9 @@ The output will be really long, go up right after the command to get the flag.
 - `FILE:/flag` specifies that `socat` should read from the `/flag` file.
 - `-` at the end instructs `socat` to send the contents to standard output.
 
-<center>
-    <h1>
-Programming
-    </h1> 
-</center>
+<div align="center">
+    <h1> Programming </h1> 
+</div>
 
 Personally, I wouldn't categorize these challenges as "programming", but that's what the Dojo suggests.
 
@@ -367,11 +357,9 @@ $ ed /flag
 p
 ```
 
-<center>
-    <h1>
-Permissions
-    </h1> 
-</center>
+<div align="center">
+    <h1> Permissions </h1> 
+</div>
 
 ### Level 37 - chown
 
@@ -414,11 +402,9 @@ this challenge container to make sure that I set the SUID bit on /usr/bin/mv!
 pwn.college{IsS_qm6D7HBmDndCzMOq0jD5n7S.QXygTMsMDN3IzW}
 ```
 
-<center>
-    <h1>
-Programming Languages
-    </h1> 
-</center>
+<div align="center">
+    <h1> Programming Languages </h1> 
+</div>
 
 ### Level 41 - perl
 
@@ -464,11 +450,9 @@ $ bash -pi
 
 After that, we simply `cat /flag` to get the flag.
 
-<center>
-    <h1>
-Commands that weren't supposed to read files
-    </h1> 
-</center>
+<div align="center">
+    <h1> Commands that weren't supposed to read files </h1> 
+</div>
 
 ### Level 45 - date
 
