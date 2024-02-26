@@ -97,7 +97,7 @@ $ echo "dxkhnvsn" > /tmp/kbcpyf &&  ./embryoio_level5 < /tmp/kbcpyf | grep pwn
 We simply need to redirect the output of the program to this file and then cat its content.
 
 ```bash
-$ ./embryoio_level6 > /tmp/wemmre && cat /tmp/wemmre | grep pwn
+does anyone know everything about black history month?$ ./embryoio_level6 > /tmp/wemmre && cat /tmp/wemmre | grep pwn
 ```
 
 ### Level 7 - empty env variables
@@ -820,6 +820,7 @@ void main() {
         // Wait for the child process to finish
         waitpid(pid, NULL, 0);
     }
+}
 
 __attribute__((constructor))
 void pwncollege() {}
@@ -1012,7 +1013,7 @@ print(p2.communicate())
 
 After that, we open `ipython` and execute the program.
 
-```ipython
+```python
 %run w3t.py
 ```
 
@@ -1023,7 +1024,257 @@ After that, we open `ipython` and execute the program.
 - the challenge checks for a specific process at the other end of stdout : grep
 ```
 
+```python
+#!/usr/bin/python
+import subprocess
 
+p1 = subprocess.Popen(['/challenge/embryoio_level49'], stdout=subprocess.PIPE)
+p2 = subprocess.Popen(['/usr/bin/grep', 'pwn'], stdin=p1.stdout, stdout=subprocess.PIPE)
 
+print(p2.communicate()[0].strip().decode())
+```
 
+```python
+%run w3t.py
+```
+
+### Level 50
+
+```bash
+- the challenge checks for a specific process at the other end of stdout : sed
+```
+
+```python
+#!/usr/bin/python
+import subprocess
+
+p1 = subprocess.Popen(['/challenge/embryoio_level50'], stdout=subprocess.PIPE)
+p2 = subprocess.Popen(['/usr/bin/sed', '-n', '/pwn\.college/p'], stdin=p1.stdout, stdout=subprocess.PIPE)
+
+print(p2.communicate()[0].strip().decode())
+```
+
+```python
+%run w3t.py
+```
+
+### Level 51
+
+```bash
+- the challenge checks for a specific process at the other end of stdout : rev
+```
+
+```python
+#!/usr/bin/python
+import subprocess
+
+p1 = subprocess.Popen(['/challenge/embryoio_level51'], stdout=subprocess.PIPE)
+p2 = subprocess.Popen(['/usr/bin/rev'], stdin=p1.stdout, stdout=subprocess.PIPE)
+
+print(p2.communicate()[0].strip().decode())
+```
+
+```bash
+$ echo }WzI3NDMsNTFd.yAdxIlX2n-17iEUBSVy-h6Tq-l4{egelloc.nwp | rev
+```
+
+### Level 52
+
+```bash
+- the challenge checks for a specific process at the other end of stdin : cat
+- the challenge will check for a hardcoded password over stdin : crmgjkcf
+```
+
+```python
+#!/usr/bin/python
+import subprocess
+
+p1 = subprocess.Popen(['/usr/bin/cat'], stdout=subprocess.PIPE)
+p2 = subprocess.Popen(['/challenge/embryoio_level52'], stdin=p1.stdout ,stdout=subprocess.PIPE)
+
+print(p2.communicate()[0].strip().decode())
+```
+
+We enter the password and get the flag.
+
+### Level 53 BROOOOOOOOken
+
+```bash
+- the challenge checks for a specific process at the other end of stdin : rev
+- the challenge will check for a hardcoded password over stdin : yirvlcfg
+```
+
+```python
+#!/usr/bin/python
+import subprocess
+
+p1 = subprocess.Popen(['/usr/bin/rev'], stdout=subprocess.PIPE)
+p2 = subprocess.Popen(['/usr/bin/rev'], stdin=p1.stdout, stdout=subprocess.PIPE)
+p3 = subprocess.Popen(['/challenge/embryoio_level53'], stdin=p2.stdout ,stdout=subprocess.PIPE)
+
+print(p3.communicate()[0].strip().decode())
+```
+
+We enter the password and get the flag.
+
+### Level 54
+
+```bash
+- the challenge checks for a specific parent process : python
+- the challenge checks for a specific process at the other end of stdout : cat
+```
+
+```python
+#!/usr/bin/python
+import subprocess
+
+p1 = subprocess.Popen(['/challenge/embryoio_level54'], stdout=subprocess.PIPE)
+p2 = subprocess.Popen('/usr/bin/cat', stdin=p1.stdout, stdout=subprocess.PIPE)
+
+res = p2.communicate()[0].strip().decode()
+print(res[res.find('pwn.college'):])
+```
+
+### Level 55
+
+```bash
+- the challenge checks for a specific parent process : python
+- the challenge checks for a specific process at the other end of stdout : grep
+```
+
+```python
+#!/usr/bin/python
+import subprocess
+
+p1 = subprocess.Popen(['/challenge/embryoio_level55'], stdout=subprocess.PIPE)
+p2 = subprocess.Popen(['/usr/bin/grep', 'pwn'], stdin=p1.stdout, stdout=subprocess.PIPE)
+
+print(p2.communicate()[0].strip().decode())
+```
+
+### Level 56
+
+```bash
+- the challenge checks for a specific parent process : python
+- the challenge checks for a specific process at the other end of stdout : sed
+```
+
+```python
+#!/usr/bin/python
+import subprocess
+
+p1 = subprocess.Popen(['/challenge/embryoio_level56'], stdout=subprocess.PIPE)
+p2 = subprocess.Popen(['/usr/bin/sed', '-n', '/pwn\.college/p'], stdin=p1.stdout, stdout=subprocess.PIPE)
+
+print(p2.communicate()[0].strip().decode())
+```
+
+### Level 57
+
+```bash
+- the challenge checks for a specific parent process : python
+- the challenge checks for a specific process at the other end of stdout : rev
+```
+
+```python
+#!/usr/bin/python
+import subprocess
+
+p1 = subprocess.Popen(['/challenge/embryoio_level57'], stdout=subprocess.PIPE)
+p2 = subprocess.Popen(['/usr/bin/rev'], stdin=p1.stdout, stdout=subprocess.PIPE)
+
+print(p2.communicate()[0].strip().decode())
+```
+
+```bash
+$ echo '}WzI3NDMsNTdd.FgXOHLQFkH47iueCkf6rcoWSiQY{egelloc.nwp' | rev
+```
+
+### Level 58
+
+```bash
+- the challenge checks for a specific parent process : python
+- the challenge checks for a specific process at the other end of stdin : cat
+- the challenge will check for a hardcoded password over stdin : kaeuhyse
+```
+
+```python
+#!/usr/bin/python
+import subprocess
+
+p1 = subprocess.Popen(['/usr/bin/cat'], stdout=subprocess.PIPE)
+p2 = subprocess.Popen(['/challenge/embryoio_level58'], stdin=p1.stdout, stdout=subprocess.PIPE)
+
+print(p2.communicate()[0].strip().decode())
+```
+
+### Level 59 BROOOOOOOOOOOKen
+
+```bash
+- the challenge checks for a specific parent process : python
+- the challenge checks for a specific process at the other end of stdin : rev
+- the challenge will check for a hardcoded password over stdin : oqvpzccp
+```
+
+```python
+#!/usr/bin/python
+import subprocess
+
+p1 = subprocess.Popen(['/usr/bin/rev'], stdout=subprocess.PIPE)
+p2 = subprocess.Popen(['/usr/bin/rev'], stdin=p1.stdout, stdout=subprocess.PIPE)
+p3 = subprocess.Popen(['/challenge/embryoio_level59'], stdin=p2.stdout, stdout=subprocess.PIPE)
+
+print(p3.communicate()[0].strip().decode())
+```
+
+<div align="center">
+    <h1> fork </h1> 
+</div>
+
+### Level 60 BROKEEEEEEEEEEEEEEEEen
+
+```bash
+- the challenge checks for a specific parent process : binary
+- the challenge checks for a specific process at the other end of stdout : cat
+```
+
+```c
+asdsadsdasdsadasdas
+```
+
+```bash
+$ gcc w3t.c -o w3t && ./w3t
+```
+
+<div align="center">
+    <h1> find </h1> 
+</div>
+
+### Level 66
+
+```bash
+- the challenge checks for a specific parent process : find
+```
+
+```bash
+$ find /challenge -name 'embryoio_level66' -exec {} \; | grep pwn
+```
+
+### Level 67
+
+```bash
+- the challenge checks for a specific parent process : find
+- the challenge will check that argv[NUM] holds value VALUE (listed to the right as NUM:VALUE) : 1:lmuwybojrl
+```
+
+```bash
+$ find /challenge -type f -exec /challenge/embryoio_level67 lmuwybojrl \; | grep pwn
+```
+
+### Level 68
+
+```bash
+- the challenge checks for a specific parent process : shellscript
+- the challenge will check that argv[NUM] holds value VALUE (listed to the right as NUM:VALUE) : 223:godxqtxpvg
+```
 
