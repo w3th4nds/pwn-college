@@ -757,7 +757,7 @@ void main() {
     if (!freopen("/tmp/vugval", "w", stdout)) {
         perror("freopen failed");
         exit(EXIT_FAILURE);
-    }
+    }ls
     // Create a child process
     pid_t pid = fork();
 
@@ -1239,7 +1239,7 @@ print(p3.communicate()[0].strip().decode())
 ```
 
 ```c
-asdsadsdasdsadasdas
+asdsadasdsadsdas
 ```
 
 ```bash
@@ -1276,5 +1276,29 @@ $ find /challenge -type f -exec /challenge/embryoio_level67 lmuwybojrl \; | grep
 ```bash
 - the challenge checks for a specific parent process : shellscript
 - the challenge will check that argv[NUM] holds value VALUE (listed to the right as NUM:VALUE) : 223:godxqtxpvg
+```
+
+Please don't judge, this is the worst thing I could write but I was bored 🤡.
+
+```bash
+#!/usr/bin/bash
+
+# Execute your binary with args as argument
+/challenge/embryoio_level68 godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg godxqtxpvg | grep pwn
+```
+
+### Level 69 MISSING?!?!?!
+
+
+
+### Level 70
+
+```bash
+- the challenge checks for a specific parent process : shellscript
+- the challenge will check that the environment is empty (except LC_CTYPE, which is impossible to get rid of in some cases)
+- the challenge will check that env[KEY] holds value VALUE (listed to the right as KEY:VALUE) : 229:bqbsmjapaw
+```
+
+```bash
 ```
 
