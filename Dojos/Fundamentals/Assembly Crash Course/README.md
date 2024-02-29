@@ -974,7 +974,7 @@ r = process('/challenge/run')
 
 r.send(asm('''
     mov r12, qword ptr [rdi]
-    mov r13, qword ptr [rdi+0x8]
+    mov r13, qword ptr [rdi + 0x8]
     add r12, r13
     mov qword ptr [rsi], r12
     '''))
@@ -1115,9 +1115,9 @@ r = process('/challenge/run')
 
 r.send(asm('''
     mov rax, qword ptr [rsp]
-    add rax, qword ptr [rsp+0x8]
-    add rax, qword ptr [rsp+0x10]
-    add rax, qword ptr [rsp+0x18]
+    add rax, qword ptr [rsp + 0x8]
+    add rax, qword ptr [rsp + 0x10]
+    add rax, qword ptr [rsp + 0x18]
     mov rdi, 4
     div rdi
     push rax 
@@ -1369,24 +1369,24 @@ r = process('/challenge/run')
 r.send(asm('''
     xor eax, eax
     mov ebx, dword ptr [rdi]
-    mov ecx, dword ptr [rdi+0x4]
+    mov ecx, dword ptr [rdi + 0x4]
     cmp ebx, 0x7f454c46
 
     jne condition_1
-    add ecx, dword ptr [rdi+0x8]
-    add ecx, dword ptr [rdi+0xc]
-    jmp done
+    add ecx, dword ptr [rdi + 0x8]
+    add ecx, dword ptr [rdi + 0xc]
+    jmp done 
 
     condition_1:
     cmp ebx, 0x00005A4D
     jne condition_2
-    sub ecx, dword ptr [rdi+0x8]
-    sub ecx, dword ptr [rdi+0xc]
+    sub ecx, dword ptr [rdi + 0x8]
+    sub ecx, dword ptr [rdi + 0xc]
     jmp done
     
     condition_2:
-    imul ecx, dword ptr [rdi+0x8]
-    imul ecx, dword ptr [rdi+0xc]
+    imul ecx, dword ptr [rdi + 0x8]
+    imul ecx, dword ptr [rdi + 0xc]
 
     done:
     mov eax, ecx
@@ -1396,7 +1396,7 @@ r.send(asm('''
 print(r.recvline_contains('pwn.college').decode())
 ```
 
-### Level 26 - Jump tables
+### Level 26 - Jump tables BROOOOOOKEN
 
 ```bash
 The last jump type is the indirect jump, which is often used for switch statements in the real world.
@@ -1467,5 +1467,269 @@ Here is an example table:
 ```
 
 ```python
+oasdsadasdsdsadsadasdsadsadsadsadsadas
+#!/usr/bin/python3
+from pwn import *
+import warnings
+warnings.filterwarnings('ignore')
+
+context.arch = 'amd64'
+context.log_level = 'critical'
+
+r = process('/challenge/run')
+
+r.send(asm('''
+
+    xor rax, rax
+    cmp rdi, 4
+    jge default_case
+    lea rax, [rsi + rdi*8]
+    jmp rax
+
+    default_case:
+    lea rax, [rsi + 0x20]
+    jmp rax
+
+
+    '''))
+
+print(r.recvline_contains('pwn.college').decode())
+```
+### Level 27 - Computing averages
+
+```bash
+In a previous level you computed the average of 4 integer quad words, which
+was a fixed amount of things to compute, but how do you work with sizes you get when
+the program is running?
+
+In most programming languages a structure exists called the
+for-loop, which allows you to do a set of instructions for a bounded amount of times.
+The bounded amount can be either known before or during the programs run, during meaning
+the value is given to you dynamically.
+
+As an example, a for-loop can be used to compute the sum of the numbers 1 to n:
+  sum = 0
+  i = 1
+  while i <= n:
+    sum += i
+    i += 1
+
+Please compute the average of n consecutive quad words, where:
+  rdi = memory address of the 1st quad word
+  rsi = n (amount to loop for)
+  rax = average computed
+
+We will now set the following in preparation for your code:
+  [0x4040c8:0x4043d8] = {n qwords]}
+  rdi = 0x4040c8
+  rsi = 98
 ```
 
+```python
+#!/usr/bin/python3
+from pwn import *
+import warnings
+warnings.filterwarnings('ignore')
+
+context.arch = 'amd64'
+context.log_level = 'critical'
+
+r = process('/challenge/run')
+
+r.send(asm('''
+    xor rax, rax 
+    mov rcx, rsi
+
+    calc_avg:
+    mov rdx, [rdi]
+    add rax, rdx
+    add rdi, 8
+    loop calc_avg
+
+    cqo
+    div rsi
+    '''))
+
+print(r.recvline_contains('pwn.college').decode())
+```
+The `cqo` instruction is used to sign-extend the contents of the rax register into the rdx:rax register pair before performing division.
+
+In x86-64 assembly language, when you use the div instruction, it divides the 128-bit value stored in the rdx:rax register pair by the specified operand. The rax register contains the low-order bits of the dividend, while rdx contains the high-order bits.
+
+The purpose of cqo is to ensure that the high-order bits of the dividend are correctly sign-extended. If you're performing division with a signed number, it's important to sign-extend the dividend appropriately to ensure the correctness of the division operation, especially when the dividend may be negative.
+
+### Level 28 - Implementing strlen
+
+```bash
+In previous levels you discovered the for-loop to iterate for a *number* of times, both dynamically and
+statically known, but what happens when you want to iterate until you meet a condition?
+
+A second loop structure exists called the while-loop to fill this demand.
+
+In the while-loop you iterate until a condition is met.
+
+As an example, say we had a location in memory with adjacent numbers and we wanted
+to get the average of all the numbers until we find one bigger or equal to 0xff:
+  average = 0
+  i = 0
+  while x[i] < 0xff:
+    average += x[i]
+    i += 1
+  average /= i
+
+Using the above knowledge, please perform the following:
+  Count the consecutive non-zero bytes in a contiguous region of memory, where:
+    rdi = memory address of the 1st byte
+    rax = number of consecutive non-zero bytes
+
+Additionally, if rdi = 0, then set rax = 0 (we will check)!
+
+An example test-case, let:
+  rdi = 0x1000
+  [0x1000] = 0x41
+  [0x1001] = 0x42
+  [0x1002] = 0x43
+  [0x1003] = 0x00
+
+then: rax = 3 should be set
+
+We will now run multiple tests on your code, here is an example run:
+  (data) [0x404000] = {10 random bytes},
+  rdi = 0x404000
+```
+
+### Level 29 - Using library functions
+
+```bash
+In this level you will be provided with a contiguous region of memory again and will loop
+over each performing a conditional operation till a zero byte is reached.
+All of which will be contained in a function!
+
+A function is a callable segment of code that does not destroy control flow.
+
+Functions use the instructions "call" and "ret".
+
+The "call" instruction pushes the memory address of the next instruction onto
+the stack and then jumps to the value stored in the first argument.
+
+Let's use the following instructions as an example:
+  0x1021 mov rax, 0x400000
+  0x1028 call rax
+  0x102a mov [rsi], rax
+
+1. call pushes 0x102a, the address of the next instruction, onto the stack.
+2. call jumps to 0x400000, the value stored in rax.
+
+The "ret" instruction is the opposite of "call".
+
+ret pops the top value off of the stack and jumps to it.
+
+Let's use the following instructions and stack as an example:
+
+                              Stack ADDR  VALUE
+  0x103f mov rax, rdx         RSP + 0x8   0xdeadbeef
+  0x1042 ret                  RSP + 0x0   0x0000102a
+
+Here, ret will jump to 0x102a
+
+Please implement the following logic:
+  str_lower(src_addr):
+    i = 0
+    if src_addr != 0:
+      while [src_addr] != 0x00:
+        if [src_addr] <= 0x5a:
+          [src_addr] = foo([src_addr])
+          i += 1
+        src_addr += 1
+    return i
+
+foo is provided at 0x403000.
+foo takes a single argument as a value and returns a value.
+
+All functions (foo and str_lower) must follow the Linux amd64 calling convention (also known as System V AMD64 ABI):
+  https://en.wikipedia.org/wiki/X86_calling_conventions#System_V_AMD64_ABI
+
+Therefore, your function str_lower should look for src_addr in rdi and place the function return in rax.
+
+An important note is that src_addr is an address in memory (where the string is located) and [src_addr] refers to the byte that exists at src_addr.
+
+Therefore, the function foo accepts a byte as its first argument and returns a byte.
+
+We will now run multiple tests on your code, here is an example run:
+  (data) [0x404000] = {10 random bytes},
+  rdi = 0x404000
+```
+
+### Level 30 - Compute the most common byte
+
+```bash
+In the previous level, you learned how to make your first function and how to call other functions.
+
+Now we will work with functions that have a function stack frame.
+
+A function stack frame is a set of pointers and values pushed onto the stack to save things for later use and allocate space on the stack for function variables.
+
+First, let's talk about the special register rbp, the Stack Base Pointer.
+
+The rbp register is used to tell where our stack frame first started.
+
+As an example, say we want to construct some list (a contigous space of memory) that is only used in our function.
+
+The list is 5 elements long, and each element is a dword.
+
+A list of 5 elements would already take 5 registers, so instead, we can make space on the stack!
+
+The assembly would look like:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+; setup the base of the stack as the current top
+mov rbp, rsp
+; move the stack 0x14 bytes (5 * 4) down
+; acts as an allocation
+sub rsp, 0x14
+; assign list[2] = 1337
+mov eax, 1337
+mov [rbp-0x8], eax
+; do more operations on the list ...
+; restore the allocated space
+mov rsp, rbp
+ret
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Notice how rbp is always used to restore the stack to where it originally was.
+
+If we don't restore the stack after use, we will eventually run out.
+
+In addition, notice how we subtracted from rsp, because the stack grows down.
+
+To make the stack have more space, we subtract the space we need.
+
+The ret and call still works the same.
+
+Once, again, please make function(s) that implements the following:
+most_common_byte(src_addr, size):
+  i = 0
+  while i <= size-1:
+    curr_byte = [src_addr + i]
+    [stack_base - curr_byte] += 1
+    i += 1
+
+  b = 0
+  max_freq = 0
+  max_freq_byte = 0
+  while b <= 0xff:
+    if [stack_base - b] > max_freq:
+      max_freq = [stack_base - b]
+      max_freq_byte = b
+    b += 1
+
+  return max_freq_byte
+
+Assumptions:
+  There will never be more than 0xffff of any byte
+  The size will never be longer than 0xffff
+  The list will have at least one element
+Constraints:
+  You must put the "counting list" on the stack
+  You must restore the stack like in a normal function
+  You cannot modify the data at src_addr
+```
