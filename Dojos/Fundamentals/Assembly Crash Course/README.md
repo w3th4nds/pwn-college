@@ -1697,14 +1697,36 @@ r = process('/challenge/run')
 
 r.send(asm('''
     
-    xor rax, rax
+    str_lower:
+    xor rcx, rcx
+    mov r15, rdi
+    test r15, r15
+    jz _end
+    
+    _loop:
+    mov bl, byte [r15 - 1]
+    test bl, bl
+    jz _end
 
+    cmp bl, 0x5a
+    ja _skip
+    mov dil, bl
+    mov r12, 0x403000
+    call r12
+    mov byte [r15 - 1], al
+    inc rcx
+
+    _skip:
+    inc r15
+    jmp _loop
+
+    _end:
+    mov rax, rcx
+    ret
     '''))
 
 print(r.recvline_contains('pwn.college').decode())
 ```
-
-
 
 ### Level 30 - Compute the most common byte
 
