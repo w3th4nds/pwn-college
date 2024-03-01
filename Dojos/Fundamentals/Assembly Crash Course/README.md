@@ -1390,13 +1390,12 @@ r.send(asm('''
 
     done:
     mov eax, ecx
-    
     '''))
 
 print(r.recvline_contains('pwn.college').decode())
 ```
 
-### Level 26 - Jump tables BROOOOOOKEN
+### Level 26 - Jump tables
 
 ```bash
 The last jump type is the indirect jump, which is often used for switch statements in the real world.
@@ -1467,7 +1466,6 @@ Here is an example table:
 ```
 
 ```python
-oasdsadasdsdsadsadasdsadsadsadsadsadas
 #!/usr/bin/python3
 from pwn import *
 import warnings
@@ -1479,18 +1477,14 @@ context.log_level = 'critical'
 r = process('/challenge/run')
 
 r.send(asm('''
-
-    xor rax, rax
-    cmp rdi, 4
-    jge default_case
-    lea rax, [rsi + rdi*8]
+    cmp rdi, 3
+    jg default_case
+    mov rax, [rsi + rdi*8]
     jmp rax
 
     default_case:
-    lea rax, [rsi + 0x20]
+    mov rax, [rsi + 0x20]
     jmp rax
-
-
     '''))
 
 print(r.recvline_contains('pwn.college').decode())
@@ -1598,6 +1592,36 @@ We will now run multiple tests on your code, here is an example run:
   rdi = 0x404000
 ```
 
+```python
+#!/usr/bin/python3
+from pwn import *
+import warnings
+warnings.filterwarnings('ignore')
+
+context.arch = 'amd64'
+context.log_level = 'critical'
+
+r = process('/challenge/run')
+
+r.send(asm('''
+    xor rax, rax
+    test rdi, rdi
+    jz _end
+    xor ecx, ecx
+    
+    _loop:
+    mov cl, byte [rdi + rax - 1]
+    test cl, cl
+    jz _end
+    inc rax
+    jmp _loop
+
+    _end:
+    '''))
+
+print(r.recvline_contains('pwn.college').decode())
+```
+
 ### Level 29 - Using library functions
 
 ```bash
@@ -1659,6 +1683,28 @@ We will now run multiple tests on your code, here is an example run:
   (data) [0x404000] = {10 random bytes},
   rdi = 0x404000
 ```
+
+```python
+#!/usr/bin/python3
+from pwn import *
+import warnings
+warnings.filterwarnings('ignore')
+
+context.arch = 'amd64'
+context.log_level = 'critical'
+
+r = process('/challenge/run')
+
+r.send(asm('''
+    
+    xor rax, rax
+
+    '''))
+
+print(r.recvline_contains('pwn.college').decode())
+```
+
+
 
 ### Level 30 - Compute the most common byte
 
