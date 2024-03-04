@@ -207,6 +207,8 @@ c
 
 ### Level 6
 
+This level is also solvable with the unintended way.
+
 ```bash
 You can modify the state of your target program with the `set` command. For example, you can use `set $rdi = 0` to zero
 out $rdi. You can use `set *((uint64_t *) $rsp) = 0x1234` to set the first value on the stack to 0x1234. You can use
@@ -235,19 +237,135 @@ time, try to write a script that doesn't require you to ever talk to the program
 challenge by correctly modifying registers / memory.
 ```
 
-```gdb
-start
-sdsadsadasdasdasdasdsadasdsadasdasdsadas
+### Level 7
 
-commands
-	b *main+686
-	silent
-	# set $local_var = *(unsigned long long *)($rbp-0x18)
-	if ($rdx != $rax)
-    	set $rdi = $rax
-    end
-    continue
-end
-continue
+```bash
+GDB is a very powerful dynamic analysis tool which you can use in order to understand the state of a program throughout
+its execution. You will become familiar with some of gdb's capabilities in this module.
+
+As we demonstrated in the previous level, gdb has FULL control over the target process. Under normal circumstances, gdb
+running as your regular user cannot attach to a privileged process. This is why gdb isn't a massive security issue which
+would allow you to just immediately solve all the levels. Nevertheless, gdb is still an extremely powerful tool.
+
+Running within this elevated instance of gdb gives you elevated control over the entire system. To clearly demonstrate
+this, see what happens when you run the command `call (void)win()`. As it turns out, all of the levels in this module
+can be solved in this way.
+
+GDB is very powerful!
+```
+
+```gdb
+call (void)win()
+```
+
+### Level 8
+
+```bash
+Running within this elevated instance of gdb gives you elevated control over the entire system. To clearly demonstrate
+this, see what happens when you run the command `call (void)win()`.
+
+Note that this will _not_ get you the flag (it seems that we broke the win function!), so you'll need to work a bit
+harder to get this flag!
+
+As it turns out, all of the levels other levels in module could be solved in this way.
+
+GDB is very powerful
+```
+
+Trying to do the previous method.
+
+```asm
+(gdb)  call (void)win()
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00005616c093f969 in win ()
+The program being debugged was signaled while in a function called from GDB.
+GDB remains in the frame where the signal was received.
+To change this behavior use "set unwindonsignal on".
+Evaluation of the expression containing the function
+(win) will be abandoned.
+When the function is done executing, GDB will silently stop.
+```
+
+Taking a look at the `win` function.
+
+```asm
+(gdb) disass win
+Dump of assembler code for function win:
+   0x00005616c093f951 <+0>:     endbr64 
+   0x00005616c093f955 <+4>:     push   rbp
+   0x00005616c093f956 <+5>:     mov    rbp,rsp
+   0x00005616c093f959 <+8>:     sub    rsp,0x10
+   0x00005616c093f95d <+12>:    mov    QWORD PTR [rbp-0x8],0x0
+   0x00005616c093f965 <+20>:    mov    rax,QWORD PTR [rbp-0x8]
+=> 0x00005616c093f969 <+24>:    mov    eax,DWORD PTR [rax]
+   0x00005616c093f96b <+26>:    lea    edx,[rax+0x1]
+   0x00005616c093f96e <+29>:    mov    rax,QWORD PTR [rbp-0x8]
+   0x00005616c093f972 <+33>:    mov    DWORD PTR [rax],edx
+   0x00005616c093f974 <+35>:    lea    rdi,[rip+0x73e]        # 0x5616c09400b9
+   0x00005616c093f97b <+42>:    call   0x5616c093f180 <puts@plt>
+   0x00005616c093f980 <+47>:    mov    esi,0x0
+   0x00005616c093f985 <+52>:    lea    rdi,[rip+0x749]        # 0x5616c09400d5
+   0x00005616c093f98c <+59>:    mov    eax,0x0
+   0x00005616c093f991 <+64>:    call   0x5616c093f240 <open@plt>
+   0x00005616c093f996 <+69>:    mov    DWORD PTR [rip+0x26a4],eax        # 0x5616c0942040 <flag_fd.5712>
+   0x00005616c093f99c <+75>:    mov    eax,DWORD PTR [rip+0x269e]        # 0x5616c0942040 <flag_fd.5712>
+   0x00005616c093f9a2 <+81>:    test   eax,eax
+   0x00005616c093f9a4 <+83>:    jns    0x5616c093f9ef <win+158>
+   0x00005616c093f9a6 <+85>:    call   0x5616c093f170 <__errno_location@plt>
+   0x00005616c093f9ab <+90>:    mov    eax,DWORD PTR [rax]
+   0x00005616c093f9ad <+92>:    mov    edi,eax
+   0x00005616c093f9af <+94>:    call   0x5616c093f270 <strerror@plt>
+   0x00005616c093f9b4 <+99>:    mov    rsi,rax
+   0x00005616c093f9b7 <+102>:   lea    rdi,[rip+0x722]        # 0x5616c09400e0
+   0x00005616c093f9be <+109>:   mov    eax,0x0
+   0x00005616c093f9c3 <+114>:   call   0x5616c093f1c0 <printf@plt>
+   0x00005616c093f9c8 <+119>:   call   0x5616c093f1f0 <geteuid@plt>
+   0x00005616c093f9cd <+124>:   test   eax,eax
+--Type <RET> for more, q to quit, c to continue without paging--c
+   0x00005616c093f9cf <+126>:   je     0x5616c093fa66 <win+277>
+   0x00005616c093f9d5 <+132>:   lea    rdi,[rip+0x734]        # 0x5616c0940110
+   0x00005616c093f9dc <+139>:   call   0x5616c093f180 <puts@plt>
+   0x00005616c093f9e1 <+144>:   lea    rdi,[rip+0x750]        # 0x5616c0940138
+   0x00005616c093f9e8 <+151>:   call   0x5616c093f180 <puts@plt>
+   0x00005616c093f9ed <+156>:   jmp    0x5616c093fa66 <win+277>
+   0x00005616c093f9ef <+158>:   mov    eax,DWORD PTR [rip+0x264b]        # 0x5616c0942040 <flag_fd.5712>
+   0x00005616c093f9f5 <+164>:   mov    edx,0x100
+   0x00005616c093f9fa <+169>:   lea    rsi,[rip+0x265f]        # 0x5616c0942060 <flag.5711>
+   0x00005616c093fa01 <+176>:   mov    edi,eax
+   0x00005616c093fa03 <+178>:   call   0x5616c093f200 <read@plt>
+   0x00005616c093fa08 <+183>:   mov    DWORD PTR [rip+0x2752],eax        # 0x5616c0942160 <flag_length.5713>
+   0x00005616c093fa0e <+189>:   mov    eax,DWORD PTR [rip+0x274c]        # 0x5616c0942160 <flag_length.5713>
+   0x00005616c093fa14 <+195>:   test   eax,eax
+   0x00005616c093fa16 <+197>:   jg     0x5616c093fa3c <win+235>
+   0x00005616c093fa18 <+199>:   call   0x5616c093f170 <__errno_location@plt>
+   0x00005616c093fa1d <+204>:   mov    eax,DWORD PTR [rax]
+   0x00005616c093fa1f <+206>:   mov    edi,eax
+   0x00005616c093fa21 <+208>:   call   0x5616c093f270 <strerror@plt>
+   0x00005616c093fa26 <+213>:   mov    rsi,rax
+   0x00005616c093fa29 <+216>:   lea    rdi,[rip+0x760]        # 0x5616c0940190
+   0x00005616c093fa30 <+223>:   mov    eax,0x0
+   0x00005616c093fa35 <+228>:   call   0x5616c093f1c0 <printf@plt>
+   0x00005616c093fa3a <+233>:   jmp    0x5616c093fa67 <win+278>
+   0x00005616c093fa3c <+235>:   mov    eax,DWORD PTR [rip+0x271e]        # 0x5616c0942160 <flag_length.5713>
+   0x00005616c093fa42 <+241>:   cdqe   
+   0x00005616c093fa44 <+243>:   mov    rdx,rax
+   0x00005616c093fa47 <+246>:   lea    rsi,[rip+0x2612]        # 0x5616c0942060 <flag.5711>
+   0x00005616c093fa4e <+253>:   mov    edi,0x1
+   0x00005616c093fa53 <+258>:   call   0x5616c093f1a0 <write@plt>
+   0x00005616c093fa58 <+263>:   lea    rdi,[rip+0x75b]        # 0x5616c09401ba
+   0x00005616c093fa5f <+270>:   call   0x5616c093f180 <puts@plt>
+   0x00005616c093fa64 <+275>:   jmp    0x5616c093fa67 <win+278>
+   0x00005616c093fa66 <+277>:   nop
+   0x00005616c093fa67 <+278>:   leave  
+   0x00005616c093fa68 <+279>:   ret    
+End of assembler dump.
+```
+
+We see that the flag is opened at `win+47`. We set the `$rip` at this location and continue to get the flag.
+
+```asm
+set $rip=win+47
+c
 ```
 
