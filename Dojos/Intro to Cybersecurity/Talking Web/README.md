@@ -642,12 +642,62 @@ You must make this request using the nc command
 ```
 
 ```bash
+GET / HTTP/1.0
+Host: 127.0.0.1
+Cookie: session=dummy
 
 ```
+
+```bash
+hacker@talking-web~level38:~$ cat req | nc 127.0.0.1 80
+HTTP/1.1 302 FOUND
+Server: Werkzeug/3.0.1 Python/3.8.10
+Date: Wed, 06 Mar 2024 18:13:59 GMT
+Content-Length: 9
+Location: /
+Server: pwn.college
+Vary: Cookie
+Set-Cookie: session=eyJzdGF0ZSI6MX0.ZeiyZw.TI05oa0J3qTkM8C4V1R5Nuep_lo; HttpOnly; Path=/
+Connection: close
+
+state: 1
+```
+
+Change the cookie 4 times and get the flag.
 
 ### Level 39 - Make multiple requests in response to stateful HTTP responses using python
 
 ```bash
+Make an HTTP request to 127.0.0.1 on port 80 to get the flag. The server requires that you make 4 stateful requests.
+You must make this request using python
+```
 
+```python
+import requests
+
+# Create a session object
+session = requests.Session()
+
+# Define the target URL
+url = 'http://127.0.0.1:80'
+
+try:
+    # Make the first request
+    response1 = session.get(url)
+
+    # Make the second request
+    response2 = session.get(url)
+
+    # Make the third request
+    response3 = session.get(url)
+
+    # Make the fourth request
+    response4 = session.get(url)
+
+
+except requests.exceptions.RequestException as e:
+    print("An error occurred:", e)
+
+print(response4.text)
 ```
 
