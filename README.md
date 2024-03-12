@@ -11,8 +11,17 @@
 
 * [Talking Web](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Intro%20to%20Cybersecurity/Talking%20Web) (39/39) ✅
 * [Building a Web Server](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Intro%20to%20Cybersecurity/Building%20a%20Web%20Server) (1/11)
-* [Intercepting Communication](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Intro%20to%20Cybersecurity/Intercepting%20Communication) (7/14)
-* [Web Security](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Intro%20to%20Cybersecurity/Web%20Security) (4/15)
+* [Intercepting Communication](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Intro%20to%20Cybersecurity/Intercepting%20Communication) (6/14)
+* [Cryptography](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Intro%20to%20Cybersecurity/Cryptography) (2/14)
+* [Web Security](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Intro%20to%20Cybersecurity/Web%20Security) (9/15)
+
+[Program Security](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Program%20Security)
+
+* [Reverse Engineering](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Program%20Security/Reverse%20Engineering) (11/44)
+
+[Software Exploitation](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Software%20Exploitation)
+
+* [Return Oriented Programming](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Software%20Exploitation/Return%20Oriented%20Programming) (/30)
 
 [Archived Modules](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Archived%20Modules/) 
 
