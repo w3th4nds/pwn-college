@@ -27,4 +27,16 @@
 
 * [Memory Errors](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Archived%20Modules/Memory%20Errors) (2/2) ✅
 
+-- TODO CREATE THESE REPOS BELOW -- 
+
+[Linux Luminarium](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Linux%20Luminarium)
+
+* [Understanding Paths](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Linux%20Luminarium/Understanding%20Paths) (7/7) ✅
+* [Critical Commands](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Linux%20Luminarium/Critical%20Commands) (1/1) ✅
+* [Shell Variables](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Linux%20Luminarium/Shell%20Variables) (5/5) ✅
+* [Piping](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Linux%20Luminarium/Piping) (4/4) ✅
+* [Bash Builtins](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Linux%20Luminarium/Bash%20Builtins) (1/1) ✅
+* [Understanding permissions](https://github.com/w3th4nds/pwn-college/tree/main/Dojos/Linux%20Luminarium/Understanding%20permissions) (4/4) ✅
+
+
 ![giphy](https://github.com/w3th4nds/pwn-college/assets/44512151/d4578a31-294b-4827-99bd-fd73e3918fd3)
